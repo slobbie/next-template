@@ -1,0 +1,8 @@
+
+@use './../../../styles/colors.module.scss' as colors;
+
+.button {
+    width: 100px;
+    height: 50px;
+    background-color: colors.$primary-color;
+}
