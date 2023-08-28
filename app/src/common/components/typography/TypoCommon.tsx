@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useMemo } from 'react'
 import colors from '@/styles/colors.module.scss'
 import styles from '@/common/components/typography/TypoCommon.module.scss'
 
@@ -49,14 +49,16 @@ const TypoCommon = ({
   color = colors['gray600']
 }: TypoCommonProps) => {
 
+  const styleMemo = useMemo(() =>
+  ({
+    color: color,
+    fontWeight: fontWeight
+  }), [fontWeight, color])
 
   return (
     <span
       className={`${styles.typography} ${styles[typographyType]}`}
-      style={{
-        color: color,
-        fontWeight: fontWeight
-      }}
+      style={styleMemo}
     >
       {children}
     </span>
