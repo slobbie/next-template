@@ -16,24 +16,10 @@ const ButtonCommon = forwardRef(function ButtonCommon
 
   const {size = 'M', children, ...rest} = props
 
-  const buttonStyle = useMemo(() => {
-    return (size: size) => {
-      switch (size) {
-        case 'S':
-          return styles.s
-        case 'M':
-          return styles.m
-        case 'L':
-          return styles.l
-      }
-    }
-  }, [])
-
-
   return (
     <button
       ref={forwardRef}
-      className={`${styles.button} ${buttonStyle(size)}`}
+      className={`${styles.button} ${styles[size]}`}
       {...rest}
     >
       {children}

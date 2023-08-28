@@ -1,9 +1,12 @@
 $primary-color: #1b64da;
 
-$grey-Scale-0: #fff;
+$gray100: #fff;
+$gray600: #1e1e25;
+
 
 :export {
   primary-color: $primary-color;
 
-  grey-Scale-0: $grey-Scale-0;
+  gray100: $gray100;
+  gray600: $gray600;
 }
