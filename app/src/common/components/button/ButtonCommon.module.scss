@@ -1,8 +1,30 @@
-
-@use './../../../styles/colors.module.scss' as colors;
+@use './../../../styles/index.module.scss' as colors;
 
 .button {
-    width: 100px;
     height: 50px;
     background-color: colors.$primary-color;
+    border: none;
+    border-radius: 5px;
+    color: colors.$grey-Scale-0;
+    font-size: 16px;
+
+    &:focus {
+        outline: none;
+    }
+    &:disabled {
+        opacity: 0.26;
+        cursor: not-allowed;
+    }
+}
+
+.s {
+    width: 22%
+}
+
+.m {
+    width: 48%
+}
+
+.l {
+    width: 100%;
 }

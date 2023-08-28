@@ -1,5 +1,9 @@
-$primary-color: tomato;
+$primary-color: #1b64da;
+
+$grey-Scale-0: #fff;
 
 :export {
-  primaryColor: $primary-color;
+  primary-color: $primary-color;
+
+  grey-Scale-0: $grey-Scale-0;
 }
