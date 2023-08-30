@@ -37,6 +37,7 @@ interface TypoCommonProps {
   typographyType: typographyType
   fontWeight?: fontWeightType
   color?: colorType
+  textAlign?: 'center' | 'start' | 'end' | 'left' | 'right' | 'center'
 }
 
 /**
@@ -46,14 +47,16 @@ const TypoCommon = ({
   children,
   typographyType,
   fontWeight = '500',
-  color = colors['gray600']
+  color = colors['gray600'],
+  textAlign = 'left'
 }: TypoCommonProps) => {
 
   const styleMemo = useMemo(() =>
   ({
     color: color,
-    fontWeight: fontWeight
-  }), [fontWeight, color])
+    fontWeight: fontWeight,
+    textAlign: textAlign
+  }), [fontWeight, color, textAlign])
 
   return (
     <span
