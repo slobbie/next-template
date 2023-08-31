@@ -7,7 +7,10 @@
     border-radius: 18px;
     color: colors.$gray100;
     font-size: 16px;
-
+    a {
+      color: colors.$gray100;
+      text-decoration: none;
+    }
     &:focus {
         outline: none;
     }
