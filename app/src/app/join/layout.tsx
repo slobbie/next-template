@@ -12,7 +12,7 @@ export default function Layout({
   children: React.ReactNode
 }) {
   return (
-    <html>
+    <html lang='en'>
       <body>
           {children}
       </body>
