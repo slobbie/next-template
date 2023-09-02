@@ -8,7 +8,7 @@ const nextConfig = {
         return [
           {
             source: '/',
-            destination: '/login',
+            destination: '/intro',
             permanent: false,  // 또는 true로 설정하면 301 리다이렉트가 됩니다.
           },
         ];

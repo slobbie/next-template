@@ -10,3 +10,25 @@
   height: 100%;
   margin: 0 auto;
 }
+
+.inputBox {
+  width: 100%;
+}
+
+.boxDown {
+  width: 100%;
+  transition: all 0.2s ease;
+  transform: translateY(50px);
+}
+
+.boxDown2 {
+  width: 100%;
+  transition: all 0.2s ease;
+  transform: translateY(100px);
+}
+
+.boxDown3 {
+  width: 100%;
+  transition: all 0.2s ease;
+  transform: translateY(150px);
+}
