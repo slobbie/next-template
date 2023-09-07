@@ -32,3 +32,11 @@
   transition: all 0.2s ease;
   transform: translateY(150px);
 }
+
+.buttonBox {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: translateY(180px);
+}
