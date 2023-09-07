@@ -5,6 +5,8 @@ import styles from '@/app/join/style/join.module.scss'
 import InputLabelAnimation from '@/common/components/input/InputLabelAnimation'
 import TypoCommon from '@/common/components/typography/TypoCommon'
 import Space from '@/common/components/space/Space'
+import ButtonCommon from '@/common/components/button/ButtonCommon'
+import clearIcon from '@/public/icon/clear.png'
 
 interface memberInfoInterface {
   mbrNm: string
@@ -62,6 +64,15 @@ const Join = () => {
     })
   }
 
+  const restInput = (id: string) => {
+    setMemberInfo((prev) => {
+      return {
+        ...prev,
+        [id]: ''
+      }
+    })
+  }
+
   // 인풋 스타일 이벤트
   const currentStyle = (pId: string) => {
     switch(pId) {
@@ -81,16 +92,18 @@ const Join = () => {
   }
 
   // 엔터 이벤트 콜벡
-  const keyDownCallback = (pId: string, pRef: React.RefObject<HTMLInputElement>) => {
+  const keyDownCallback = (pId: string, pRef?: React.RefObject<HTMLInputElement> | null) => {
     setTrigger((prev) => {
       return {
         ...prev,
         [pId]: true
       }
     })
-    setTimeout(() => {
-        pRef.current?.focus()
-    }, 20)
+    if (pRef) {
+      setTimeout(() => {
+        pRef?.current?.focus()
+      }, 20)
+    }
     currentStyle(pId)
   }
 
@@ -100,17 +113,21 @@ const Join = () => {
       const inputId = e.currentTarget.id
       switch(inputId) {
         case 'mbrPhoneNum':
-          keyDownCallback(inputId, phoneComInputRef)
-          setTitle('어떤 통신사를 쓰고 있나요?')
+            keyDownCallback(inputId, phoneComInputRef)
+            setTitle('어떤 통신사를 쓰고 있나요?')
           break
         case 'phoneCom':
-          keyDownCallback(inputId, mbrNmInputRef)
-          setTitle('이름을 알려주세요')
+            keyDownCallback(inputId, mbrNmInputRef)
+            setTitle('이름을 알려주세요')
           break
         case 'mbrNm':
             keyDownCallback(inputId, ssNumInputRef)
             setTitle('주민등록 번호를 알려주세요')
             break
+        case 'ssNum':
+            keyDownCallback(inputId)
+            setTitle('입력하신 정보가맞으신가요?')
+          break
       }
     }
   }
@@ -179,9 +196,17 @@ const Join = () => {
               label='핸드폰 번호'
               onChange={(e) => onChangeMemberInfo(e)}
               text={memberInfo.mbrPhoneNum}
+              icon={clearIcon}
+              iconCallback={() => restInput('mbrPhoneNum')}
               />
           </div>
-
+          {trigger.ssNum &&
+           <div className={styles.buttonBox}>
+              <ButtonCommon>
+                다음
+              </ButtonCommon>
+            </div>
+          }
         </Container>
       </div>
     </div>
