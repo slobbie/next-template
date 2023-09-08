@@ -6,8 +6,8 @@ import InputLabelAnimation from '@/common/components/input/InputLabelAnimation'
 import TypoCommon from '@/common/components/typography/TypoCommon'
 import Space from '@/common/components/space/Space'
 import ButtonCommon from '@/common/components/button/ButtonCommon'
-import clearIcon from '@/public/icon/clear.png'
-
+import clearIcon from '@/public/icon/clear.svg'
+import SelectCommon from '@/common/components/select/SelectBottomSheet'
 interface memberInfoInterface {
   mbrNm: string
   mbrPhoneNum: string
@@ -46,6 +46,9 @@ const Join = () => {
       phoneCom: false,
       ssNum: false,
   })
+
+  // 셀렉트 박스 토글 상태
+  const [isActive, setIsActive] = useState<boolean>(false)
 
   // 핸드폰 번호 인풋 스타일
   const [mbrPhoneNumStyle, setMbrPhoneNumStyle] = useState(styles['inputBox'])
@@ -116,10 +119,10 @@ const Join = () => {
             keyDownCallback(inputId, phoneComInputRef)
             setTitle('어떤 통신사를 쓰고 있나요?')
           break
-        case 'phoneCom':
-            keyDownCallback(inputId, mbrNmInputRef)
-            setTitle('이름을 알려주세요')
-          break
+        // case 'phoneCom':
+        //     keyDownCallback(inputId, mbrNmInputRef)
+        //     setTitle('이름을 알려주세요')
+        //   break
         case 'mbrNm':
             keyDownCallback(inputId, ssNumInputRef)
             setTitle('주민등록 번호를 알려주세요')
@@ -132,6 +135,45 @@ const Join = () => {
     }
   }
 
+  const ssNumData = [
+    {
+      id: '',
+      value: 'SKT'
+    },
+    {
+      id: '',
+      value: 'KT'
+    },
+    {
+      id: '',
+      value: 'LG U+'
+    },
+    {
+      id: '',
+      value: 'SKT 알뜰폰'
+    },
+    {
+      id: '',
+      value: 'KT 알뜰폰'
+    },
+    {
+      id: '',
+      value: 'LG U+ 알뜰폰'
+    },
+  ]
+
+  // 통신사 셀렉트
+  const onSelectItemHandler = (selectItem: string, pId?: string) => {
+    setMemberInfo((prev) => {
+      return {
+        ...prev,
+        [pId as string]: selectItem
+      }
+    })
+    keyDownCallback(pId as string, mbrNmInputRef)
+    setTitle('이름을 알려주세요')
+    setIsActive((prev) => !prev)
+  }
 
 
   return (
@@ -144,7 +186,7 @@ const Join = () => {
         >
           <Space bottom={40} />
           <TypoCommon
-            typographyType='t1'
+            typographyType='t5'
             textAlign='left'
           >
             {title}
@@ -178,15 +220,19 @@ const Join = () => {
           }
            {
             trigger.mbrPhoneNum &&
-            <div className={phoneComStyle}>
-              <InputLabelAnimation
-                ref={phoneComInputRef}
-                label='통신사'
+            <div style={{
+              position: 'relative',
+              top: -12
+            }} className={phoneComStyle}>
+              <SelectCommon
                 id='phoneCom'
-                text={memberInfo.phoneCom}
-                onKeyDown={(e) => onKeyDown(e)}
-                onChange={(e) => onChangeMemberInfo(e)}
-                />
+                ref={phoneComInputRef}
+                title='통신사'
+                listTitle='통신사를 선택해주세요'
+                data={ssNumData}
+                isActive={isActive}
+                selectItem={onSelectItemHandler}
+              />
             </div>
           }
           <div className={mbrPhoneNumStyle}>
