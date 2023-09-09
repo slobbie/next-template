@@ -7,12 +7,14 @@ import TypoCommon from '@/common/components/typography/TypoCommon'
 import Space from '@/common/components/space/Space'
 import ButtonCommon from '@/common/components/button/ButtonCommon'
 import clearIcon from '@/public/icon/clear.svg'
-import SelectCommon from '@/common/components/select/SelectBottomSheet'
+import SelectBottomSheet from '@/common/components/select/SelectBottomSheet'
+import Dot from '@/common/components/dot/Dot'
 interface memberInfoInterface {
   mbrNm: string
   mbrPhoneNum: string
   phoneCom: string
   ssNum: string
+  ssNumBack: string
 }
 
 interface inputToggleInterface {
@@ -20,6 +22,7 @@ interface inputToggleInterface {
   mbrPhoneNum: boolean
   phoneCom: boolean
   ssNum: boolean
+  ssNumBack: boolean
 }
 
 /** 회원 가입 페이지 */
@@ -27,6 +30,7 @@ const Join = () => {
   const mbrNmInputRef = useRef<HTMLInputElement>(null) // 멤버이름 ref
   const phoneComInputRef = useRef<HTMLInputElement>(null) // 통신사 ref
   const ssNumInputRef = useRef<HTMLInputElement>(null) // 주민번호 ref
+  const ssNumBackInputRef = useRef<HTMLInputElement>(null) // 주민번호 ref
   // 상단 타이틀 상태
   const [title, setTitle] = useState<string>('휴대폰 번호를 알려주세요')
 
@@ -36,6 +40,7 @@ const Join = () => {
     mbrPhoneNum: '',
     phoneCom: '',
     ssNum: '',
+    ssNumBack: ''
   })
 
   // 회원가입 인풋 상태 관리
@@ -45,6 +50,7 @@ const Join = () => {
       mbrPhoneNum: false,
       phoneCom: false,
       ssNum: false,
+      ssNumBack: false
   })
 
   // 셀렉트 박스 토글 상태
@@ -83,7 +89,7 @@ const Join = () => {
         return setMbrPhoneNumStyle(styles['boxDown'])
       case 'phoneCom':
         setMbrPhoneNumStyle(styles['boxDown2'])
-        setPhoneComStyle(styles['boxDown'])
+        setPhoneComStyle(styles['boxDown26'])
         return
         case 'mbrNm':
         setMbrPhoneNumStyle(styles['boxDown3'])
@@ -118,18 +124,18 @@ const Join = () => {
         case 'mbrPhoneNum':
             keyDownCallback(inputId, phoneComInputRef)
             setTitle('어떤 통신사를 쓰고 있나요?')
+            setIsActive(true)
           break
-        // case 'phoneCom':
-        //     keyDownCallback(inputId, mbrNmInputRef)
-        //     setTitle('이름을 알려주세요')
-        //   break
         case 'mbrNm':
             keyDownCallback(inputId, ssNumInputRef)
             setTitle('주민등록 번호를 알려주세요')
             break
-        case 'ssNum':
+        case 'ssNumBack':
             keyDownCallback(inputId)
             setTitle('입력하신 정보가맞으신가요?')
+          break
+        case 'ssNum':
+            keyDownCallback(inputId, ssNumBackInputRef)
           break
       }
     }
@@ -170,6 +176,7 @@ const Join = () => {
         [pId as string]: selectItem
       }
     })
+    currentStyle(pId as string)
     keyDownCallback(pId as string, mbrNmInputRef)
     setTitle('이름을 알려주세요')
     setIsActive((prev) => !prev)
@@ -194,15 +201,36 @@ const Join = () => {
           <Space bottom={80} />
           {
             trigger.mbrNm &&
-            <div className={styles.inputBox}>
-              <InputLabelAnimation
-                ref={ssNumInputRef}
-                label='주민등록번호'
-                id='ssNum'
-                text={memberInfo.ssNum}
-                onKeyDown={(e) => onKeyDown(e)}
-                onChange={(e) => onChangeMemberInfo(e)}
+            <div className={styles.ssNumBox}>
+              <div className={styles.inputRow}>
+                <InputLabelAnimation
+                  ref={ssNumInputRef}
+                  label='주민등록번호'
+                  id='ssNum'
+                  text={memberInfo.ssNum}
+                  onKeyDown={(e) => onKeyDown(e)}
+                  onChange={(e) => onChangeMemberInfo(e)}
                 />
+              </div>
+              <div className={styles.inputRow}>
+               <div className={styles.inputDotBox}>
+                 <div className={styles.inputDotBoxRow}>
+                    <InputLabelAnimation
+                      id='ssNumBack'
+                      ref={ssNumBackInputRef}
+                      text={memberInfo.ssNumBack}
+                      onKeyDown={(e) => onKeyDown(e)}
+                      onChange={(e) => onChangeMemberInfo(e)}
+                    />
+                 </div>
+                  <Dot />
+                  <Dot />
+                  <Dot />
+                  <Dot />
+                  <Dot />
+                  <Dot />
+               </div>
+              </div>
             </div>
           }
           {
@@ -220,19 +248,17 @@ const Join = () => {
           }
            {
             trigger.mbrPhoneNum &&
-            <div style={{
-              position: 'relative',
-              top: -12
-            }} className={phoneComStyle}>
-              <SelectCommon
-                id='phoneCom'
-                ref={phoneComInputRef}
-                title='통신사'
-                listTitle='통신사를 선택해주세요'
-                data={ssNumData}
-                isActive={isActive}
-                selectItem={onSelectItemHandler}
-              />
+            <div
+              className={phoneComStyle}>
+                <SelectBottomSheet
+                  id='phoneCom'
+                  ref={phoneComInputRef}
+                  title='통신사'
+                  listTitle='통신사를 선택해주세요'
+                  data={ssNumData}
+                  isActive={isActive}
+                  selectItem={onSelectItemHandler}
+                />
             </div>
           }
           <div className={mbrPhoneNumStyle}>
@@ -246,7 +272,7 @@ const Join = () => {
               iconCallback={() => restInput('mbrPhoneNum')}
               />
           </div>
-          {trigger.ssNum &&
+          {trigger.ssNumBack &&
            <div className={styles.buttonBox}>
               <ButtonCommon>
                 다음
