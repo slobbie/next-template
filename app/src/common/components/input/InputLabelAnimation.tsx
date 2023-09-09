@@ -6,7 +6,7 @@ import Image, { StaticImageData } from 'next/image'
 interface InputLabelNonBorderProps extends InputHTMLAttributes<HTMLInputElement> {
   text: string
   id: string
-  label: string
+  label?: string
   icon?: StaticImageData
   iconCallback?: () => void
 }
@@ -19,13 +19,18 @@ const InputLabelAnimation = forwardRef( function InputLabelNonBorder
     <div className={styles.wrap}>
         <p className={styles.p}>
           <input ref={forwardRef} id={id} {...rest} value={text} autoComplete='' required />
-          <label htmlFor={id}>{label}</label>
-          {icon && text &&
+          {label && <label htmlFor={id}>{label}</label>}
+          {/* {icon && text &&
+            <div className={styles.iconBox}  onClick={iconCallback}>
+              <Image className={styles.icon} src={icon} alt={id} />
+            </div>
+          } */}
+        </p>
+        {icon && text &&
             <div className={styles.iconBox}  onClick={iconCallback}>
               <Image className={styles.icon} src={icon} alt={id} />
             </div>
           }
-        </p>
     </div>
   )
 })

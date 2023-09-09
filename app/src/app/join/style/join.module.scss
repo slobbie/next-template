@@ -1,8 +1,8 @@
 .wrapper {
-  // padding: 0 24px;
   display: flex;
   width: 100%;
   height: 100vh;
+  background-color: #fff;
 }
 
 .content {
@@ -15,22 +15,40 @@
   width: 100%;
 }
 
+.ssNumBox {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+}
+
 .boxDown {
   width: 100%;
   transition: all 0.2s ease;
   transform: translateY(50px);
 }
 
+.boxDown26 {
+  width: 100%;
+  transition: all 0.2s ease;
+  transform: translateY(26px);
+}
+
 .boxDown2 {
   width: 100%;
   transition: all 0.2s ease;
-  transform: translateY(100px);
+  transform: translateY(80px);
+}
+
+.boxDown2_80 {
+  width: 100%;
+  transition: all 0.2s ease;
+  transform: translateY(80px);
 }
 
 .boxDown3 {
   width: 100%;
   transition: all 0.2s ease;
-  transform: translateY(150px);
+  transform: translateY(136px);
 }
 
 .buttonBox {
@@ -39,4 +57,20 @@
   justify-content: center;
   align-items: center;
   transform: translateY(180px);
+}
+
+
+.inputRow {
+  width: 46%;
+}
+
+
+.inputDotBox {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.inputDotBoxRow {
+  width: 30%;
 }
