@@ -1,6 +1,6 @@
 'use client'
 import Container from '@/common/components/container/Container'
-import React, {useRef, useState } from 'react'
+import React, {useEffect, useMemo, useRef, useState } from 'react'
 import styles from '@/app/join/style/join.module.scss'
 import InputLabelAnimation from '@/common/components/input/InputLabelAnimation'
 import TypoCommon from '@/common/components/typography/TypoCommon'
@@ -23,6 +23,14 @@ interface inputToggleInterface {
   phoneCom: boolean
   ssNum: boolean
   ssNumBack: boolean
+}
+
+interface inputErrorLogInterface {
+  mbrNmError?: boolean,
+  mbrPhoneNumError?: boolean,
+  phoneComError?: boolean,
+  ssNumError?: boolean,
+  ssNumBackError?: boolean
 }
 
 /** 회원 가입 페이지 */
@@ -65,12 +73,18 @@ const Join = () => {
 
   // 인풋 온체인지 이벤트
   const onChangeMemberInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setMemberInfo((prev) => {
-      return {
-        ...prev,
-        [e.target.id]: e.target.value
+      const regex: RegExp = /^[0-9]*$/;
+
+      if ((e.target.id === 'ssNum'  || e.target.id === 'ssNumBack' || e.target.id === 'mbrPhoneNum') && (!regex.test(e.target.value))) {
+        return
+      } else {
+        setMemberInfo((prev) => {
+          return {
+            ...prev,
+            [e.target.id]: e.target.value
+          }
+        })
       }
-    })
   }
 
   const restInput = (id: string) => {
@@ -182,6 +196,28 @@ const Join = () => {
     setIsActive((prev) => !prev)
   }
 
+  // TODO: 에러 로그 처리 해야함
+  const [isErrorLog, setIsErrorLog] = useState<inputErrorLogInterface>({
+    mbrNmError: false,
+    mbrPhoneNumError: false,
+    phoneComError: false,
+    ssNumError: false,
+    ssNumBackError: false
+  })
+
+  // 버튼 비활성 체크 함수
+  const nextStepValid = (pValue: memberInfoInterface) => {
+    const {mbrNm, mbrPhoneNum, phoneCom, ssNum, ssNumBack} = pValue;
+    const isMbrNm = mbrNm === '' || mbrNm.length < 1;
+    const isMbrPhoneNum = mbrPhoneNum === '' || mbrPhoneNum.length < 10;
+    const isPhoneCom = phoneCom === '';
+    const isSsNum = ssNum === '' || ssNum.length < 6;
+    const isSsNumBack = ssNumBack === '' || ssNumBack.length < 1;
+
+    return isMbrNm || isMbrPhoneNum || isPhoneCom || isSsNum || isSsNumBack;
+  }
+
+  const isButtonDisabled = nextStepValid(memberInfo);
 
   return (
     <div className={styles.wrapper}>
@@ -207,16 +243,32 @@ const Join = () => {
                   ref={ssNumInputRef}
                   label='주민등록번호'
                   id='ssNum'
+                  maxLength={6}
+                  type='text'
                   text={memberInfo.ssNum}
                   onKeyDown={(e) => onKeyDown(e)}
                   onChange={(e) => onChangeMemberInfo(e)}
                 />
+                {isErrorLog.ssNumError || isErrorLog.ssNumBackError &&
+                  <>
+                    <Space top={5} />
+                      <TypoCommon
+                       typographyType='st2'
+                       textAlign='left'
+                       color='red500'
+                     >
+                     주민번호를 다시 확인해주세요
+                    </TypoCommon>
+                  </>
+                }
               </div>
               <div className={styles.inputRow}>
                <div className={styles.inputDotBox}>
                  <div className={styles.inputDotBoxRow}>
                     <InputLabelAnimation
                       id='ssNumBack'
+                      type='text'
+                      maxLength={1}
                       ref={ssNumBackInputRef}
                       text={memberInfo.ssNumBack}
                       onKeyDown={(e) => onKeyDown(e)}
@@ -243,7 +295,22 @@ const Join = () => {
                 text={memberInfo.mbrNm}
                 onKeyDown={(e) => onKeyDown(e)}
                 onChange={(e) => onChangeMemberInfo(e)}
+                icon={clearIcon}
+                iconCallback={() => restInput('mbrNm')}
                 />
+                {
+                  isErrorLog.mbrNmError &&
+                  <>
+                    <Space top={5} />
+                    <TypoCommon
+                      typographyType='st2'
+                      textAlign='left'
+                      color='red500'
+                    >
+                    이름을 다시 확인해주세요
+                    </TypoCommon>
+                  </>
+                }
             </div>
           }
            {
@@ -254,11 +321,25 @@ const Join = () => {
                   id='phoneCom'
                   ref={phoneComInputRef}
                   title='통신사'
+                  selectedValue={memberInfo.phoneCom}
                   listTitle='통신사를 선택해주세요'
                   data={ssNumData}
                   isActive={isActive}
                   selectItem={onSelectItemHandler}
                 />
+                {
+                  isErrorLog.phoneComError &&
+                  <>
+                    <Space top={5} />
+                    <TypoCommon
+                      typographyType='st2'
+                      textAlign='left'
+                      color='red500'
+                    >
+                    통신사를 선택해주세요
+                    </TypoCommon>
+                  </>
+                }
             </div>
           }
           <div className={mbrPhoneNumStyle}>
@@ -266,15 +347,30 @@ const Join = () => {
               id='mbrPhoneNum'
               onKeyDown={(e) => onKeyDown(e)}
               label='핸드폰 번호'
+              type='text'
               onChange={(e) => onChangeMemberInfo(e)}
               text={memberInfo.mbrPhoneNum}
               icon={clearIcon}
               iconCallback={() => restInput('mbrPhoneNum')}
               />
+              {isErrorLog.mbrPhoneNumError &&
+                <>
+                  <Space top={5} />
+                  <TypoCommon
+                    typographyType='st2'
+                    textAlign='left'
+                    color='red500'
+                  >
+                  핸드폰번호를 확인해주세요
+                  </TypoCommon>
+                </>
+              }
           </div>
           {trigger.ssNumBack &&
            <div className={styles.buttonBox}>
-              <ButtonCommon>
+              <ButtonCommon
+                disabled={isButtonDisabled}
+              >
                 다음
               </ButtonCommon>
             </div>

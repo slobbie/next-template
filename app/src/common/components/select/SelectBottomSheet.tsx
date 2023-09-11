@@ -13,6 +13,7 @@ interface SelectBottomSheetProps {
   id: string
   title: string
   listTitle: string
+  selectedValue?: string
   data: dataInterface[]
   isActive: boolean
   selectItem: (item: string, id?: string) => void
@@ -20,8 +21,7 @@ interface SelectBottomSheetProps {
 /** 바텀시트 설렉트 */
 const SelectBottomSheet = forwardRef(function SelectBottomSheet
   (props: SelectBottomSheetProps, forwardRef: Ref<HTMLDivElement>){
-  const {id, title, listTitle, data, isActive, selectItem} = props
-
+  const {id, title, listTitle, data, isActive, selectItem, selectedValue} = props
   return (
    <>
      <div className={styles.select_box_wrap}>
@@ -29,7 +29,7 @@ const SelectBottomSheet = forwardRef(function SelectBottomSheet
         <div ref={forwardRef} id={id} className={styles.selectBottomSheet_wrap}>
           <div className={styles.selectedItem}>
             <span className={styles.selected_span}>
-              {title}
+              {selectedValue ? selectedValue : title}
             </span>
             <div className={styles.iconBox} onClick={() => selectItem('')}>
               <Image className={styles.arrowIcon} src={arrowDown} alt='아래 방향 화살표' />

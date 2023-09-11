@@ -20,11 +20,6 @@ const InputLabelAnimation = forwardRef( function InputLabelNonBorder
         <p className={styles.p}>
           <input ref={forwardRef} id={id} {...rest} value={text} autoComplete='' required />
           {label && <label htmlFor={id}>{label}</label>}
-          {/* {icon && text &&
-            <div className={styles.iconBox}  onClick={iconCallback}>
-              <Image className={styles.icon} src={icon} alt={id} />
-            </div>
-          } */}
         </p>
         {icon && text &&
             <div className={styles.iconBox}  onClick={iconCallback}>

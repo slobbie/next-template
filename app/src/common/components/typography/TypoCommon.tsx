@@ -47,13 +47,13 @@ const TypoCommon = ({
   children,
   typographyType,
   fontWeight = '500',
-  color = colors['gray600'],
+  color,
   textAlign = 'left'
 }: TypoCommonProps) => {
 
   const styleMemo = useMemo(() =>
   ({
-    color: color,
+    color: color ? colors[color] : colors['gray600'],
     fontWeight: fontWeight,
     textAlign: textAlign
   }), [fontWeight, color, textAlign])
