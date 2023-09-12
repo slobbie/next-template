@@ -9,29 +9,8 @@ import ButtonCommon from '@/common/components/button/ButtonCommon'
 import clearIcon from '@/public/icon/clear.svg'
 import SelectBottomSheet from '@/common/components/select/SelectBottomSheet'
 import Dot from '@/common/components/dot/Dot'
-interface memberInfoInterface {
-  mbrNm: string
-  mbrPhoneNum: string
-  phoneCom: string
-  ssNum: string
-  ssNumBack: string
-}
+import { inputToggleInterface, memberInfoInterface } from '@/join/interface/join.interface'
 
-interface inputToggleInterface {
-  mbrNm: boolean
-  mbrPhoneNum: boolean
-  phoneCom: boolean
-  ssNum: boolean
-  ssNumBack: boolean
-}
-
-interface inputErrorLogInterface {
-  mbrNmError?: boolean,
-  mbrPhoneNumError?: boolean,
-  phoneComError?: boolean,
-  ssNumError?: boolean,
-  ssNumBackError?: boolean
-}
 
 /** 회원 가입 페이지 */
 const Join = () => {
@@ -63,7 +42,6 @@ const Join = () => {
 
   // 셀렉트 박스 토글 상태
   const [isActive, setIsActive] = useState<boolean>(false)
-
   // 핸드폰 번호 인풋 스타일
   const [mbrPhoneNumStyle, setMbrPhoneNumStyle] = useState(styles['inputBox'])
   // 통신사 인풋 스타일
@@ -87,6 +65,7 @@ const Join = () => {
       }
   }
 
+  // input 리셋 이벤트 함수
   const restInput = (id: string) => {
     setMemberInfo((prev) => {
       return {
@@ -196,14 +175,6 @@ const Join = () => {
     setIsActive((prev) => !prev)
   }
 
-  // TODO: 에러 로그 처리 해야함
-  const [isErrorLog, setIsErrorLog] = useState<inputErrorLogInterface>({
-    mbrNmError: false,
-    mbrPhoneNumError: false,
-    phoneComError: false,
-    ssNumError: false,
-    ssNumBackError: false
-  })
 
   // 버튼 비활성 체크 함수
   const nextStepValid = (pValue: memberInfoInterface) => {
@@ -214,10 +185,17 @@ const Join = () => {
     const isSsNum = ssNum === '' || ssNum.length < 6;
     const isSsNumBack = ssNumBack === '' || ssNumBack.length < 1;
 
+
     return isMbrNm || isMbrPhoneNum || isPhoneCom || isSsNum || isSsNumBack;
   }
 
+  // 버튼 활성화 여부 상태
   const isButtonDisabled = nextStepValid(memberInfo);
+
+  // 주민번호 점표시
+  const dots = Array(6).fill(null).map((_, index) => (
+    <Dot key={index} />
+  ));
 
   return (
     <div className={styles.wrapper}>
@@ -234,7 +212,7 @@ const Join = () => {
           >
             {title}
           </TypoCommon>
-          <Space bottom={80} />
+          <Space bottom={60} />
           {
             trigger.mbrNm &&
             <div className={styles.ssNumBox}>
@@ -249,18 +227,6 @@ const Join = () => {
                   onKeyDown={(e) => onKeyDown(e)}
                   onChange={(e) => onChangeMemberInfo(e)}
                 />
-                {isErrorLog.ssNumError || isErrorLog.ssNumBackError &&
-                  <>
-                    <Space top={5} />
-                      <TypoCommon
-                       typographyType='st2'
-                       textAlign='left'
-                       color='red500'
-                     >
-                     주민번호를 다시 확인해주세요
-                    </TypoCommon>
-                  </>
-                }
               </div>
               <div className={styles.inputRow}>
                <div className={styles.inputDotBox}>
@@ -275,12 +241,7 @@ const Join = () => {
                       onChange={(e) => onChangeMemberInfo(e)}
                     />
                  </div>
-                  <Dot />
-                  <Dot />
-                  <Dot />
-                  <Dot />
-                  <Dot />
-                  <Dot />
+                  {dots}
                </div>
               </div>
             </div>
@@ -298,19 +259,6 @@ const Join = () => {
                 icon={clearIcon}
                 iconCallback={() => restInput('mbrNm')}
                 />
-                {
-                  isErrorLog.mbrNmError &&
-                  <>
-                    <Space top={5} />
-                    <TypoCommon
-                      typographyType='st2'
-                      textAlign='left'
-                      color='red500'
-                    >
-                    이름을 다시 확인해주세요
-                    </TypoCommon>
-                  </>
-                }
             </div>
           }
            {
@@ -327,25 +275,14 @@ const Join = () => {
                   isActive={isActive}
                   selectItem={onSelectItemHandler}
                 />
-                {
-                  isErrorLog.phoneComError &&
-                  <>
-                    <Space top={5} />
-                    <TypoCommon
-                      typographyType='st2'
-                      textAlign='left'
-                      color='red500'
-                    >
-                    통신사를 선택해주세요
-                    </TypoCommon>
-                  </>
-                }
             </div>
           }
           <div className={mbrPhoneNumStyle}>
             <InputLabelAnimation
               id='mbrPhoneNum'
-              onKeyDown={(e) => onKeyDown(e)}
+              onKeyDown={(e) => {
+                onKeyDown(e)
+              }}
               label='핸드폰 번호'
               type='text'
               onChange={(e) => onChangeMemberInfo(e)}
@@ -353,21 +290,21 @@ const Join = () => {
               icon={clearIcon}
               iconCallback={() => restInput('mbrPhoneNum')}
               />
-              {isErrorLog.mbrPhoneNumError &&
-                <>
-                  <Space top={5} />
-                  <TypoCommon
-                    typographyType='st2'
-                    textAlign='left'
-                    color='red500'
-                  >
-                  핸드폰번호를 확인해주세요
-                  </TypoCommon>
-                </>
-              }
           </div>
           {trigger.ssNumBack &&
            <div className={styles.buttonBox}>
+            {isButtonDisabled &&
+            <>
+              <TypoCommon
+                typographyType='st2'
+                textAlign='left'
+                color='red500'
+              >
+              항목들의 입력 정보를 확인해주세요
+              </TypoCommon>
+              <Space top={10} />
+            </>
+            }
               <ButtonCommon
                 disabled={isButtonDisabled}
               >

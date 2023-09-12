@@ -20,6 +20,7 @@
     ],
     "paths": {
       "@/*": ["./src/*"],
+      "@/join/*": ["./src/app/join/*"],
       "@/public/*": ["./public/*"]
     }
   },
