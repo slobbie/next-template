@@ -1,58 +1,11 @@
 @use '../../../styles/colors.module.scss' as colors;
 
 
-
-.selectBottomSheet_wrap {
-  width: 100%;
-  height: 45px;
-  display: flex;
-  align-items: center;
-  padding-left: 5px;
-  border-bottom: 3px solid #5fa8d3;
-  background-color: #fff;
-}
-
-.select_box_wrap {
-  overflow: hidden;
-}
-
-.select_label {
-  display: inline-block;
-  font-size: 14px;
-  color: #5fa8d3;
-  margin-bottom: 5px;
-}
-
-.selectedItem {
-  display: flex;
-  align-items: center;
-  width: 100%;
-}
-
-.selected_span {
-  display: inline-block;
-  color: #9d9d9d;
-}
-
-
-.iconBox {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-left: auto;
-  margin-right: 10px;
-}
-
-.arrowIcon {
-  width: 24px;
-  height: 24px;
-}
-
 .bottomSheetDim {
   width: 100%;
   height: 100%;
   position: absolute;
-  transform: translate(-10%, -22.7%);
+  transform: translate(0%, -100%);
   background-color: rgba(30, 30, 27, 0.4);
   transition:all .3s ease;
   z-index: 1000;
