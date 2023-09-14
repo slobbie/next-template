@@ -1,15 +1,18 @@
 'use client'
 import Container from '@/common/components/container/Container'
-import React, {useEffect, useMemo, useRef, useState } from 'react'
+import React, {useRef, useState } from 'react'
 import styles from '@/app/join/style/join.module.scss'
 import InputLabelAnimation from '@/common/components/input/InputLabelAnimation'
 import TypoCommon from '@/common/components/typography/TypoCommon'
 import Space from '@/common/components/space/Space'
 import ButtonCommon from '@/common/components/button/ButtonCommon'
 import clearIcon from '@/public/icon/clear.svg'
-import SelectBottomSheet from '@/common/components/select/SelectBottomSheet'
+import SelectBottomSheet from '@/app/join/components/select/SelectBottomSheet'
 import Dot from '@/common/components/dot/Dot'
 import { inputToggleInterface, memberInfoInterface } from '@/join/interface/join.interface'
+import BottomSheetList from '@/common/components/bottomSheet/BottomSheetList'
+import BottomSheetCustom from '@/common/components/bottomSheet/BottomSheetCustom'
+import CheckBox from '@/common/components/checkBox/CheckBox'
 
 
 /** 회원 가입 페이지 */
@@ -30,6 +33,8 @@ const Join = () => {
     ssNumBack: ''
   })
 
+  const [errorLog, setErrorLog] = useState<string>('')
+
   // 회원가입 인풋 상태 관리
   const [trigger, setTrigger] = useState<inputToggleInterface>(
     {
@@ -40,8 +45,10 @@ const Join = () => {
       ssNumBack: false
   })
 
-  // 셀렉트 박스 토글 상태
-  const [isActive, setIsActive] = useState<boolean>(false)
+  // 통신사 셀렉트 박스 토글 상태
+  const [isSsNumActive, setIsSsNumActive] = useState<boolean>(false)
+  // 약관 동의 바텀시트 상태
+  const [isAgreeActive, setIsAgreeActive] = useState<boolean>(false)
   // 핸드폰 번호 인풋 스타일
   const [mbrPhoneNumStyle, setMbrPhoneNumStyle] = useState(styles['inputBox'])
   // 통신사 인풋 스타일
@@ -109,6 +116,7 @@ const Join = () => {
     currentStyle(pId)
   }
 
+  // TODO: 엔터 이벤트때 인풋 유효성 검사 로직을 넣어서 하단에 에러 로그 넣어주기
   // 엔터 이벤트
   const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -117,7 +125,7 @@ const Join = () => {
         case 'mbrPhoneNum':
             keyDownCallback(inputId, phoneComInputRef)
             setTitle('어떤 통신사를 쓰고 있나요?')
-            setIsActive(true)
+            setIsSsNumActive(true)
           break
         case 'mbrNm':
             keyDownCallback(inputId, ssNumInputRef)
@@ -131,6 +139,7 @@ const Join = () => {
             keyDownCallback(inputId, ssNumBackInputRef)
           break
       }
+      inputValid(inputId, e.currentTarget.value)
     }
   }
 
@@ -161,6 +170,17 @@ const Join = () => {
     },
   ]
 
+  // 통신사 바텀시트
+  const showSsNumBottomSheet = () => {
+    setIsSsNumActive((prev) => !prev)
+  }
+
+  // 약관동의 바텀시트
+  const showAgreeBottomSheet = () => {
+    setTitle(`${memberInfo.mbrNm}님 정보가 맞나요?`)
+    setIsAgreeActive((prev) => !prev)
+  }
+
   // 통신사 셀렉트
   const onSelectItemHandler = (selectItem: string, pId?: string) => {
     setMemberInfo((prev) => {
@@ -171,10 +191,9 @@ const Join = () => {
     })
     currentStyle(pId as string)
     keyDownCallback(pId as string, mbrNmInputRef)
+    setIsSsNumActive((prev) => !prev)
     setTitle('이름을 알려주세요')
-    setIsActive((prev) => !prev)
   }
-
 
   // 버튼 비활성 체크 함수
   const nextStepValid = (pValue: memberInfoInterface) => {
@@ -184,7 +203,6 @@ const Join = () => {
     const isPhoneCom = phoneCom === '';
     const isSsNum = ssNum === '' || ssNum.length < 6;
     const isSsNumBack = ssNumBack === '' || ssNumBack.length < 1;
-
 
     return isMbrNm || isMbrPhoneNum || isPhoneCom || isSsNum || isSsNumBack;
   }
@@ -197,124 +215,185 @@ const Join = () => {
     <Dot key={index} />
   ));
 
+  // 사용자 인풋 유효성 검사
+  const inputValid = (pInputId: string, pValue: string) => {
+    const isMbrNm = pValue === '' || pValue.length < 1;
+    const isMbrPhoneNum = pValue === '' || pValue.length < 10;
+    const isPhoneCom = pValue === '';
+    const isSsNum = pValue === '' || pValue.length < 6;
+    const isSsNumBack = pValue === '' || pValue.length < 1;
+    if (pInputId === 'mbrNm' && isMbrNm) {
+      setErrorLog('이름을 확인해주세요.')
+      return
+    }
+    else if (pInputId === 'mbrPhoneNum' && isMbrPhoneNum) {
+      setErrorLog('핸드폰 번호를 확인해주세요.')
+      return
+    }
+    else if (pInputId === 'phoneCom' && isPhoneCom) {
+      setErrorLog('통신사 정보를 확인해주세요.')
+      return
+    }
+    else if (pInputId === 'ssNum' && isSsNum) {
+      setErrorLog('주민등록 번호를 확인해주세요.')
+      return
+    }
+    else if (pInputId === 'ssNumBack' && isSsNumBack) {
+      setErrorLog('주민등록 번호를 확인해주세요.')
+      return
+    }
+     else {
+      setErrorLog('')
+    }
+  }
+
+  const joinNextStepHandler = () => {
+    console.log('핸드폰 인증으로 이동')
+    setIsAgreeActive((prev) => !prev)
+  }
+
   return (
-    <div className={styles.wrapper}>
-      <div className={styles.content}>
-        <Container
-          position='flex-col'
-          justifyContent='flex-start'
-          alignContent='flex-start'
-        >
-          <Space bottom={40} />
-          <TypoCommon
-            typographyType='t5'
-            textAlign='left'
+    <>
+      <div className={styles.wrapper}>
+        <div className={styles.content}>
+          <Container
+            position='flex-col'
+            justifyContent='flex-start'
+            alignContent='flex-start'
           >
-            {title}
-          </TypoCommon>
-          <Space bottom={60} />
-          {
-            trigger.mbrNm &&
-            <div className={styles.ssNumBox}>
-              <div className={styles.inputRow}>
+            <Space bottom={40} />
+            <TypoCommon
+              typographyType='t5'
+              textAlign='left'
+            >
+              {title}
+            </TypoCommon>
+            <Space bottom={60} />
+            {
+              trigger.mbrNm &&
+              <div className={styles.ssNumBox}>
+                <div className={styles.inputRow}>
+                  <InputLabelAnimation
+                    ref={ssNumInputRef}
+                    label='주민등록번호'
+                    id='ssNum'
+                    maxLength={6}
+                    type='text'
+                    text={memberInfo.ssNum}
+                    onKeyDown={(e) => onKeyDown(e)}
+                    onChange={(e) => onChangeMemberInfo(e)}
+                  />
+                </div>
+                <div className={styles.inputRow}>
+                 <div className={styles.inputDotBox}>
+                   <div className={styles.inputDotBoxRow}>
+                      <InputLabelAnimation
+                        id='ssNumBack'
+                        type='text'
+                        maxLength={1}
+                        ref={ssNumBackInputRef}
+                        text={memberInfo.ssNumBack}
+                        onKeyDown={(e) => onKeyDown(e)}
+                        onChange={(e) => onChangeMemberInfo(e)}
+                      />
+                   </div>
+                    {dots}
+                 </div>
+                </div>
+              </div>
+            }
+            {
+              trigger.phoneCom &&
+              <div className={mbrNmStyle}>
                 <InputLabelAnimation
-                  ref={ssNumInputRef}
-                  label='주민등록번호'
-                  id='ssNum'
-                  maxLength={6}
-                  type='text'
-                  text={memberInfo.ssNum}
+                  ref={mbrNmInputRef}
+                  label='이름'
+                  id='mbrNm'
+                  text={memberInfo.mbrNm}
                   onKeyDown={(e) => onKeyDown(e)}
                   onChange={(e) => onChangeMemberInfo(e)}
-                />
+                  icon={clearIcon}
+                  iconCallback={() => restInput('mbrNm')}
+                  />
               </div>
-              <div className={styles.inputRow}>
-               <div className={styles.inputDotBox}>
-                 <div className={styles.inputDotBoxRow}>
-                    <InputLabelAnimation
-                      id='ssNumBack'
-                      type='text'
-                      maxLength={1}
-                      ref={ssNumBackInputRef}
-                      text={memberInfo.ssNumBack}
-                      onKeyDown={(e) => onKeyDown(e)}
-                      onChange={(e) => onChangeMemberInfo(e)}
-                    />
-                 </div>
-                  {dots}
-               </div>
-              </div>
-            </div>
-          }
-          {
-            trigger.phoneCom &&
-            <div className={mbrNmStyle}>
-              <InputLabelAnimation
-                ref={mbrNmInputRef}
-                label='이름'
-                id='mbrNm'
-                text={memberInfo.mbrNm}
-                onKeyDown={(e) => onKeyDown(e)}
-                onChange={(e) => onChangeMemberInfo(e)}
-                icon={clearIcon}
-                iconCallback={() => restInput('mbrNm')}
-                />
-            </div>
-          }
-           {
-            trigger.mbrPhoneNum &&
-            <div
-              className={phoneComStyle}>
-                <SelectBottomSheet
-                  id='phoneCom'
-                  ref={phoneComInputRef}
-                  title='통신사'
-                  selectedValue={memberInfo.phoneCom}
-                  listTitle='통신사를 선택해주세요'
-                  data={ssNumData}
-                  isActive={isActive}
-                  selectItem={onSelectItemHandler}
-                />
-            </div>
-          }
-          <div className={mbrPhoneNumStyle}>
-            <InputLabelAnimation
-              id='mbrPhoneNum'
-              onKeyDown={(e) => {
-                onKeyDown(e)
-              }}
-              label='핸드폰 번호'
-              type='text'
-              onChange={(e) => onChangeMemberInfo(e)}
-              text={memberInfo.mbrPhoneNum}
-              icon={clearIcon}
-              iconCallback={() => restInput('mbrPhoneNum')}
-              />
-          </div>
-          {trigger.ssNumBack &&
-           <div className={styles.buttonBox}>
-            {isButtonDisabled &&
-            <>
-              <TypoCommon
-                typographyType='st2'
-                textAlign='left'
-                color='red500'
-              >
-              항목들의 입력 정보를 확인해주세요
-              </TypoCommon>
-              <Space top={10} />
-            </>
             }
-              <ButtonCommon
-                disabled={isButtonDisabled}
-              >
-                다음
-              </ButtonCommon>
+             {
+              trigger.mbrPhoneNum &&
+              <div
+                className={phoneComStyle}>
+                  <SelectBottomSheet
+                    id='phoneCom'
+                    ref={phoneComInputRef}
+                    title='통신사'
+                    selectedValue={memberInfo.phoneCom}
+                    selectItem={showSsNumBottomSheet}
+                  />
+              </div>
+            }
+            <div className={mbrPhoneNumStyle}>
+              <InputLabelAnimation
+                id='mbrPhoneNum'
+                onKeyDown={(e) => {
+                  onKeyDown(e)
+                }}
+                label='핸드폰 번호'
+                type='text'
+                onChange={(e) => onChangeMemberInfo(e)}
+                text={memberInfo.mbrPhoneNum}
+                icon={clearIcon}
+                iconCallback={() => restInput('mbrPhoneNum')}
+                />
             </div>
-          }
-        </Container>
+            {errorLog.length > 0 &&
+              <div className={styles.errorLogBox}>
+                <TypoCommon
+                  typographyType='st2'
+                  textAlign='left'
+                  color='red500'
+                >
+                {errorLog}
+                </TypoCommon>
+                <Space top={10} />
+              </div>
+              }
+            {(trigger.ssNumBack && errorLog.length <= 0) &&
+             <div className={styles.buttonBox}>
+                <ButtonCommon
+                  onClick={showAgreeBottomSheet}
+                  disabled={isButtonDisabled}
+                >
+                  다음
+                </ButtonCommon>
+              </div>
+            }
+          </Container>
+        </div>
       </div>
-    </div>
+      {isSsNumActive &&
+        <BottomSheetList
+          id='phoneCom'
+          data={ssNumData}
+          listTitle='통신사를 선택해주세요'
+          selectItem={onSelectItemHandler}
+        />
+      }
+      {isAgreeActive &&
+        <BottomSheetCustom
+        id=''
+        listTitle='패스트 뱅크를 쓰려면 동의가 필요해요'
+        selectItem={showAgreeBottomSheet}
+        >
+          <div className={styles.agreeBox}>
+            <CheckBox id="필수약관" label='필수약관'/>
+           <div className={styles.bottomBtnBox}>
+              <ButtonCommon onClick={joinNextStepHandler}>
+               동의
+              </ButtonCommon>
+           </div>
+          </div>
+        </BottomSheetCustom>
+      }
+    </>
   )
 }
 
