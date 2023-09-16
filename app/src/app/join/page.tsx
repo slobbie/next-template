@@ -7,12 +7,12 @@ import TypoCommon from '@/common/components/typography/TypoCommon'
 import Space from '@/common/components/space/Space'
 import ButtonCommon from '@/common/components/button/ButtonCommon'
 import clearIcon from '@/public/icon/clear.svg'
-import SelectBottomSheet from '@/app/join/components/select/SelectBottomSheet'
 import Dot from '@/common/components/dot/Dot'
 import { inputToggleInterface, memberInfoInterface } from '@/join/interface/join.interface'
-import BottomSheetList from '@/common/components/bottomSheet/BottomSheetList'
 import BottomSheetCustom from '@/common/components/bottomSheet/BottomSheetCustom'
 import CheckBox from '@/common/components/checkBox/CheckBox'
+import BottomSheetList from '@/common/components/bottomSheet/BottomSheetList'
+import SelectBottomSheet from '@/join/components/select/SelectBottomSheet'
 
 
 /** 회원 가입 페이지 */
