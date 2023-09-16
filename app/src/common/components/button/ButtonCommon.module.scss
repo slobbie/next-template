@@ -4,7 +4,7 @@
     height: 50px;
     background-color: colors.$primary-color;
     border: none;
-    border-radius: 18px;
+    border-radius: 10px;
     color: colors.$gray100;
     font-size: 16px;
     a {
@@ -21,11 +21,13 @@
 }
 
 .S {
-    width: 22%
+    max-width: 30%;
+    width: auto;
+    height: 35px;
 }
 
 .M {
-    width: 48%
+    width: 48%;
 }
 
 .L {
