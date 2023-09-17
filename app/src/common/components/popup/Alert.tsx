@@ -4,16 +4,25 @@ import styles from '@/common/components/popup/alert.module.scss'
 import TypoCommon from '@/common/components/typography/TypoCommon'
 import ButtonCommon from '@/common/components/button/ButtonCommon'
 import usePopup from '@/hooks/usePopup'
+import { alertInterface } from '@/common/components/popup/interface/popup.interface'
 
-interface AlertInterface {
-  massage: string
-}
 
 // 기본 확인 팝업
 const Alert = ({
-  massage
-}: AlertInterface) => {
+  massage,
+  confirmLabel,
+  confirmEvent
+}: alertInterface) => {
   const popup = usePopup()
+
+  // alert 이벤트 핸들러
+  const alertEventHandler = () => {
+    if (confirmEvent) {
+      confirmEvent()
+    }
+    popup.popupHide()
+  }
+
   return (
     <div className={styles.alertDim}>
       <div className={styles.alertBox}>
@@ -24,10 +33,8 @@ const Alert = ({
             </TypoCommon>
           </div>
           <div className={styles.btnBox}>
-            <ButtonCommon onClick={() => popup.popupHide({
-              isPopup: false,
-            })}>
-              확인
+            <ButtonCommon onClick={alertEventHandler}>
+              {confirmLabel ? confirmLabel :  '확인'}
             </ButtonCommon>
           </div>
         </div>
