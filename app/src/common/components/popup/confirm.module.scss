@@ -1,0 +1,45 @@
+@use '../../../styles//index.module.scss' as colors;
+
+.confirmDim {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1000;
+  background-color: colors.$greyOpacity300;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.confirmBox {
+  background-color: colors.$gray100;
+  width: 80%;
+  height: 200px;
+  border-radius: 15px;
+}
+
+
+.confirmContent {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.top {
+  margin-top: 60px;
+  display: flex;
+  justify-content: center;
+}
+
+.btnBox {
+  width: 80%;
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}

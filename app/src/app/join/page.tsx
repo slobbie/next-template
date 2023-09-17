@@ -13,6 +13,7 @@ import BottomSheetCustom from '@/common/components/bottomSheet/BottomSheetCustom
 import CheckBox from '@/common/components/checkBox/CheckBox'
 import BottomSheetList from '@/common/components/bottomSheet/BottomSheetList'
 import SelectBottomSheet from '@/join/components/select/SelectBottomSheet'
+import Confirm from '@/common/components/popup/Confirm'
 
 
 /** 회원 가입 페이지 */

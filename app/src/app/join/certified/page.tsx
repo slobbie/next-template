@@ -15,11 +15,18 @@ const Certified = () => {
 
   // 팝업 핸들러
   const showPopup = () => {
-    popup.popupShow({
-      type: 'alert',
-      massage: '테스트 팝업 입니다.'
-    }
-    )
+    // popup.alertShow({
+    //   massage: '테스트 팝업 입니다.',
+    // })
+    popup.confirmShow({
+      massage: '확인 취소 팝업',
+      confirmEvent: () => {
+        console.log('확인 이벤트')
+      },
+      cancelEvent: () => {
+        console.log('취소 이벤트')
+      }
+    })
   }
 
   return (
