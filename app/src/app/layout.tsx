@@ -1,5 +1,7 @@
+import GlobalPopup from '@/common/components/popup/GlobalPopup'
 import './globals.css'
 import type { Metadata } from 'next'
+import RecoilProviders from '@/common/utils/RecoilProviders'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -12,8 +14,13 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
+      <html lang="en">
+        <body>
+          <RecoilProviders>
+            {children}
+            <GlobalPopup />
+          </RecoilProviders>
+        </body>
+      </html>
   )
 }
