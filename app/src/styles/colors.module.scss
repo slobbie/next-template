@@ -8,6 +8,7 @@ $gray600: #1e1e25;
 $red500: #f04452;
 
 $greyOpacity200: rgba(0,27,55,0.1);
+$greyOpacity300: rgba(0,29,58,0.18);
 
 :export {
   primary-color: $primary-color;
@@ -18,7 +19,7 @@ $greyOpacity200: rgba(0,27,55,0.1);
   gray600: $gray600;
 
   greyOpacity200: $greyOpacity200;
-
+  greyOpacity300: $greyOpacity300;
 
   red500: $red500;
 }

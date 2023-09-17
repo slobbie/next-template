@@ -1,3 +1,4 @@
+"use client"
 import TypoCommon from '@/common/components/typography/TypoCommon'
 import React from 'react'
 import styles from '@/join/style/join.module.scss'
@@ -6,9 +7,21 @@ import Space from '@/common/components/space/Space'
 import InputLabelAnimation from '@/common/components/input/InputLabelAnimation'
 import ButtonCommon from '@/common/components/button/ButtonCommon'
 import certifiedStyle from '@/join/style/certified.module.scss'
+import usePopup from '@/hooks/usePopup'
 
 // 회원 가입 인증
 const Certified = () => {
+  const popup = usePopup()
+
+  // 팝업 핸들러
+  const showPopup = () => {
+    popup.popupShow({
+      type: 'alert',
+      massage: '테스트 팝업 입니다.'
+    }
+    )
+  }
+
   return (
     <div className={styles.wrapper}>
       <div className={certifiedStyle.content}>
@@ -31,7 +44,9 @@ const Certified = () => {
                 text={''}
               />
               <Space bottom={20} />
-              <ButtonCommon size='S' color='gray600' backgroundColor='gray300' >
+              <ButtonCommon size='S' color='gray600' backgroundColor='gray300'
+                onClick={showPopup}
+              >
                 <TypoCommon typographyType="st5">
                   문자 다시 받기
                 </TypoCommon>
