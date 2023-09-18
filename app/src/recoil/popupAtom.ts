@@ -11,14 +11,9 @@ interface popupInterface {
   cancelEvent?: () => void
 }
 
-export const isPopup = atom<boolean>({
-  key: 'isPopup',
-  default: false,
-});
-
 
 export const popupProps = atom<popupInterface>({
-  key: 'popupProps',
+  key: 'popupPropsAtom',
   default: {
     isPopup: false,
     type: 'alert',

@@ -14,10 +14,12 @@ import CheckBox from '@/common/components/checkBox/CheckBox'
 import BottomSheetList from '@/common/components/bottomSheet/BottomSheetList'
 import SelectBottomSheet from '@/join/components/select/SelectBottomSheet'
 import Confirm from '@/common/components/popup/Confirm'
+import { useRouter } from 'next/navigation'
 
 
 /** 회원 가입 페이지 */
 const Join = () => {
+  const router = useRouter()
   const mbrNmInputRef = useRef<HTMLInputElement>(null) // 멤버이름 ref
   const phoneComInputRef = useRef<HTMLInputElement>(null) // 통신사 ref
   const ssNumInputRef = useRef<HTMLInputElement>(null) // 주민번호 ref
@@ -249,7 +251,7 @@ const Join = () => {
   }
 
   const joinNextStepHandler = () => {
-    console.log('핸드폰 인증으로 이동')
+    router.push('/join/certified')
     setIsAgreeActive((prev) => !prev)
   }
 
