@@ -383,7 +383,7 @@ const Join = () => {
       {isAgreeActive &&
         <BottomSheetCustom
         id=''
-        listTitle='패스트 뱅크를 쓰려면 동의가 필요해요'
+        listTitle='Fast를 이용하려면 동의가 필요해요'
         selectItem={showAgreeBottomSheet}
         >
           <div className={styles.agreeBox}>
