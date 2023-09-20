@@ -3,6 +3,9 @@ import Container from "@/common/components/container/Container"
 import TypoCommon from "@/common/components/typography/TypoCommon"
 import { useRouter } from "next/navigation"
 import { useEffect } from "react"
+import Lottie from "react-lottie-player"
+import IntroLogo from '@/public/icon/introLogo.json'
+import styles from '@/app/intro/intro.module.scss'
 
 /** 인트로 페이지 */
 export default function intro() {
@@ -11,7 +14,7 @@ export default function intro() {
   useEffect(() => {
     setTimeout(() => {
       router.push('/join')
-    }, 2000)
+    }, 1500)
   }, [])
 
   return (
@@ -22,8 +25,14 @@ export default function intro() {
         justifyContent='center'
       >
         <TypoCommon typographyType='t1'>
-         Fast Bank
+         Fast
         </TypoCommon>
+        <Lottie
+          className={styles.intro_logo}
+          play
+          animationData={IntroLogo}
+          loop={false}
+          />
       </Container>
     </section>
 

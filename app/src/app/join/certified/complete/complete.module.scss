@@ -1,34 +1,13 @@
-.bottomBox {
-  width: 100%;
-  margin-top: auto;
-  height: 60%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
-  align-content: flex-start;
+.completeIcon{
+  position: absolute;
+  width: 360px;
+  height: 360px;
+  top: 90px;
+  z-index: 100;
 }
 
-.pwdBox {
-  display: flex;
-  align-items: center;
-  justify-content: space-around;
-  width: 40%;
-  height: 50px;
-  margin-top: 86px;
-}
-
-
-.numItem {
-  width: 32.74%;
-  height: 25%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-
-.ArrowIcon {
-  width: 30px;
-  height: 30px;
-  margin-bottom: 3px;
+.completeBgIcon{
+  width: 360px;
+  height: 360px;
+  transform: rotate(180deg);
 }
