@@ -1,16 +1,16 @@
-import { atom } from 'recoil';
+import { atom } from 'recoil'
+
 type Type = 'alert' | 'confirm'
 
 interface popupInterface {
   isPopup?: boolean
-  type: Type,
+  type: Type
   massage: string
   confirmLabel?: string
   confirmEvent?: () => void
   cancelLabel?: string
   cancelEvent?: () => void
 }
-
 
 export const popupProps = atom<popupInterface>({
   key: 'popupPropsAtom',
@@ -21,6 +21,6 @@ export const popupProps = atom<popupInterface>({
     confirmLabel: '',
     confirmEvent: () => {},
     cancelLabel: '',
-    cancelEvent: () => {}
+    cancelEvent: () => {},
   },
-});
+})

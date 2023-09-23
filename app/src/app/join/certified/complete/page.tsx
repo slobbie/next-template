@@ -15,8 +15,6 @@ import { useRouter } from 'next/navigation'
 const Complete = () => {
   const router = useRouter()
   return (
-    <div className={joinCommonStyles.wrapper}>
-      <div className={joinCommonStyles.content}>
         <Container
           position='flex-col'
           justifyContent='flex-start'
@@ -47,8 +45,6 @@ const Complete = () => {
             비밀번호 설정
           </ButtonCommon>
         </Container>
-      </div>
-    </div>
   )
 }
 

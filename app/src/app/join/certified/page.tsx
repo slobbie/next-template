@@ -47,8 +47,6 @@ const Certified = () => {
   }
 
   return (
-    <div className={styles.wrapper}>
-      <div className={certifiedStyle.content}>
         <Container
             position='flex-col'
             justifyContent='flex-start'
@@ -88,8 +86,6 @@ const Certified = () => {
               </ButtonCommon>
             </div>
           </Container>
-      </div>
-    </div>
   )
 }
 
