@@ -2,7 +2,7 @@ import { atom } from 'recoil'
 
 type Type = 'alert' | 'confirm'
 
-interface popupInterface {
+interface PopupInterface {
   isPopup?: boolean
   type: Type
   massage: string
@@ -12,7 +12,7 @@ interface popupInterface {
   cancelEvent?: () => void
 }
 
-export const popupProps = atom<popupInterface>({
+const popupProps = atom<PopupInterface>({
   key: 'popupPropsAtom',
   default: {
     isPopup: false,
@@ -24,3 +24,5 @@ export const popupProps = atom<popupInterface>({
     cancelEvent: () => {},
   },
 })
+
+export default popupProps

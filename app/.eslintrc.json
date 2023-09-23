@@ -8,13 +8,13 @@
   "extends": [
     "next",
     // "next/babel",
-    "@typescript-eslint/parser",
     "next/core-web-vitals",
     "eslint:recommended",
     "plugin:react/recommended",
     "airbnb",
     "plugin:prettier/recommended",
     "plugin:@typescript-eslint/recommended",
+    "@typescript-eslint/parser",
     "airbnb/hooks",
     "airbnb-typescript",
     "prettier"
