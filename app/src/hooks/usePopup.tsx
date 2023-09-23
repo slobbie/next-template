@@ -1,49 +1,50 @@
-import React from 'react'
-import { alertInterface, confirmInterface } from '@/common/components/popup/interface/popup.interface'
+import {
+  alertInterface,
+  confirmInterface,
+} from '@/common/components/popup/interface/popup.interface'
 import { popupProps } from '@/recoil/popupAtom'
 import { useSetRecoilState } from 'recoil'
 
-
 // 팝업 컨트롤 hooks
 const usePopup = () => {
-  const setPopupProp =  useSetRecoilState(popupProps)
+  const setPopupProp = useSetRecoilState(popupProps)
 
   // 팝업 호출
-  const alertShow= ({
+  const alertShow = ({
     massage,
     confirmLabel,
-    confirmEvent
+    confirmEvent,
   }: alertInterface) => {
     setPopupProp({
       type: 'alert',
       isPopup: true,
-      massage: massage,
-      confirmLabel: confirmLabel ? confirmLabel : '',
-      confirmEvent: confirmEvent ? confirmEvent : () => {}
+      massage,
+      confirmLabel: confirmLabel || '',
+      confirmEvent: confirmEvent || (() => {}),
     })
   }
 
   // 팝업 호출
-  const confirmShow= ({
+  const confirmShow = ({
     massage,
     confirmLabel,
     cancelLabel,
     confirmEvent,
-    cancelEvent
+    cancelEvent,
   }: confirmInterface) => {
     setPopupProp({
       type: 'confirm',
       isPopup: true,
-      massage: massage,
-      confirmLabel: confirmLabel ? confirmLabel : '',
-      confirmEvent: confirmEvent ? confirmEvent : () => {},
-      cancelLabel: cancelLabel ? cancelLabel : '',
-      cancelEvent: cancelEvent ? cancelEvent : () => {}
+      massage,
+      confirmLabel: confirmLabel || '',
+      confirmEvent: confirmEvent || (() => {}),
+      cancelLabel: cancelLabel || '',
+      cancelEvent: cancelEvent || (() => {}),
     })
   }
 
   // 팝업 닫기
-  const popupHide= () => {
+  const popupHide = () => {
     setPopupProp({
       isPopup: false,
       type: 'alert',
@@ -51,14 +52,14 @@ const usePopup = () => {
       confirmLabel: '',
       confirmEvent: () => {},
       cancelLabel: '',
-      cancelEvent: () => {}
+      cancelEvent: () => {},
     })
   }
 
   return {
     alertShow,
     confirmShow,
-    popupHide
+    popupHide,
   }
 }
 
