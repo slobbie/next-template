@@ -2,6 +2,7 @@ import GlobalPopup from '@/common/components/popup/GlobalPopup'
 import type { Metadata } from 'next'
 import RecoilProviders from '@/common/utils/RecoilProviders'
 import styles from '@/styles/index.module.scss'
+import './globals.css'
 
 export const metadata: Metadata = {
   title: 'Create Next App',

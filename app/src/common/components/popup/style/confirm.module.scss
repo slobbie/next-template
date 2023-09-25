@@ -1,4 +1,4 @@
-@use '../../../styles//index.module.scss' as colors;
+@use '../../../../styles/index.module.scss' as colors;
 
 .confirmDim {
   width: 100%;
@@ -19,7 +19,6 @@
   height: 200px;
   border-radius: 15px;
 }
-
 
 .confirmContent {
   width: 100%;

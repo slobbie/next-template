@@ -2,13 +2,18 @@ import {
   alertInterface,
   confirmInterface,
 } from '@/common/components/popup/interface/popup.interface'
-import { popupProps } from '@/recoil/popupAtom'
+import {
+  BottomSheetCustomInterface,
+  BottomSheetListInterface,
+  bottomSheetProps,
+  popupProps,
+} from '@/recoil/popupAtom'
 import { useSetRecoilState } from 'recoil'
 
 // 팝업 컨트롤 hooks
 const usePopup = () => {
   const setPopupProp = useSetRecoilState(popupProps)
-
+  const setBottomSheet = useSetRecoilState(bottomSheetProps)
   // 팝업 호출
   const alertShow = ({
     massage,
@@ -43,6 +48,46 @@ const usePopup = () => {
     })
   }
 
+  // 바텀 시트 팝업 호출
+  const bottomSheetListShow = ({
+    id,
+    listTitle,
+    data,
+    selectItem,
+  }: BottomSheetListInterface) => {
+    setBottomSheet({
+      id: id,
+      listTitle: listTitle,
+      type: 'bottomSheetList',
+      data: data,
+      selectItem: selectItem,
+    })
+    setPopupProp({
+      type: 'bottomSheetList',
+      isPopup: true,
+      massage: '',
+    })
+  }
+
+  // 바텀시트 커스텀 팝업 호출
+  const bottomSheetCustomShow = ({
+    id,
+    listTitle,
+    children,
+  }: BottomSheetCustomInterface) => {
+    setBottomSheet({
+      id: id as string,
+      listTitle: listTitle,
+      type: 'bottomSheetCustom',
+      children: children,
+    })
+    setPopupProp({
+      type: 'bottomSheetCustom',
+      isPopup: true,
+      massage: '',
+    })
+  }
+
   // 팝업 닫기
   const popupHide = () => {
     setPopupProp({
@@ -60,6 +105,8 @@ const usePopup = () => {
     alertShow,
     confirmShow,
     popupHide,
+    bottomSheetListShow,
+    bottomSheetCustomShow,
   }
 }
 
