@@ -1,6 +1,6 @@
 'use client'
 import Container from '@/common/components/container/Container'
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import styles from '@/app/join/style/join.module.scss'
 import InputLabelAnimation from '@/common/components/input/InputLabelAnimation'
 import TypoCommon from '@/common/components/typography/TypoCommon'
@@ -16,6 +16,8 @@ import CheckBox from '@/common/components/checkBox/CheckBox'
 import SelectBottomSheet from '@/join/components/select/SelectBottomSheet'
 import { useRouter } from 'next/navigation'
 import usePopup from '@/hooks/usePopup'
+import { useQuery } from '@tanstack/react-query'
+import { getAgreeList } from '@/api/join'
 
 /** 회원 가입 페이지 */
 const Join = () => {
@@ -55,6 +57,15 @@ const Join = () => {
   const [phoneComStyle, setPhoneComStyle] = useState(styles['inputBox'])
   // 이름 인풋 스타일
   const [mbrNmStyle, setMbrNmStyle] = useState(styles['inputBox'])
+
+  const { data } = useQuery({
+    queryKey: ['agreeList-not-ssr'],
+    queryFn: getAgreeList,
+  })
+
+  useEffect(() => {
+    console.log('정해석 otherData', data)
+  }, [])
 
   // 인풋 온체인지 이벤트
   const onChangeMemberInfo = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -3,6 +3,7 @@ import type { Metadata } from 'next'
 import RecoilProviders from '@/common/utils/RecoilProviders'
 import styles from '@/styles/index.module.scss'
 import './globals.css'
+import QueryProviders from '@/common/utils/QueryProviders'
 
 export const metadata: Metadata = {
   title: 'Create Next App',
@@ -17,12 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <RecoilProviders>
-          <div className={styles.wrapper}>
-            <div className={styles.content}>{children}</div>
-          </div>
-          <GlobalPopup />
-        </RecoilProviders>
+        <QueryProviders>
+          <RecoilProviders>
+            <div className={styles.wrapper}>
+              <div className={styles.content}>{children}</div>
+            </div>
+            <GlobalPopup />
+          </RecoilProviders>
+        </QueryProviders>
       </body>
     </html>
   )
