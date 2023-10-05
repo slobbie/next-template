@@ -1,3 +1,6 @@
+import services from '@/common/constants/services'
+import { httpHandler } from '@/common/utils/httpHandler'
+
 export interface getAgreeList {
   agreeRq: string
   agreeContent: string
@@ -7,7 +10,6 @@ export interface getAgreeList {
 
 // 약관 동의 정보 리스트
 export const getAgreeList = async () => {
-  const res = await fetch('http://localhost:3005/api/v1/agree')
-  const agreeList = (await res.json()) as getAgreeList[]
-  return agreeList
+  const res = await httpHandler.get<getAgreeList[]>(services.url.agree)
+  return res as getAgreeList[]
 }

@@ -58,14 +58,16 @@ const Join = () => {
   // 이름 인풋 스타일
   const [mbrNmStyle, setMbrNmStyle] = useState(styles['inputBox'])
 
-  const { data } = useQuery({
+  const { data: otherData } = useQuery({
     queryKey: ['agreeList-not-ssr'],
     queryFn: getAgreeList,
   })
 
-  useEffect(() => {
-    console.log('정해석 otherData', data)
-  }, [])
+  console.log('정해석 otherData', otherData)
+
+  // useEffect(() => {
+  //   otherData
+  // }, [])
 
   // 인풋 온체인지 이벤트
   const onChangeMemberInfo = (e: React.ChangeEvent<HTMLInputElement>) => {
